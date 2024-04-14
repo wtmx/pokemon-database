@@ -5,6 +5,11 @@
 
 const path = require("path");
 
+// Load the following libraries to keep Glitch project in sync with Github repo
+const cmd = require('node-cmd');
+const crypto = require('crypto'); 
+const bodyParser = require('body-parser');
+
 // Require the fastify framework and instantiate it
 const fastify = require("fastify")({
   // Set this to true for detailed logging:

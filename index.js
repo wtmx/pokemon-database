@@ -38,7 +38,7 @@ async function createNotionPage() {
   
   for (let pokemon of pokeArray) {
     
-    console.log(`Fetching ${pokeData.name} from PokeAPI.`)
+    console.log(`Sending data to Notion.`)
     const response = await notion.pages.create({
       "parent" : {
         "type" :  "database_id",
@@ -67,6 +67,7 @@ async function createNotionPage() {
         "Weight" : { "number": pokemon.weight}
       }
     })
+    console.log(response)
     
   }
     

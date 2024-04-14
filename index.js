@@ -21,6 +21,8 @@ async function getPokemon() {
         "special-defense": poke.data.stats[4].base_stat,
         "speed": poke.data.stats[5].base_stat,
       }
+      
+      pokeArray.push(pokeData)
       console.log(pokeData)
   })
     .catch((error) => {
@@ -29,3 +31,18 @@ async function getPokemon() {
 }
           
 getPokemon()
+
+async function createNotionPage() {
+  
+  for (let pokemon of pokeArray) {
+    
+    const response = await notion.pages.create({
+      "parent" : {
+        "type" :  "database_id",
+        "database_id": process.env.NOTION_DATABASE_ID
+      }
+    })
+    
+  }
+    
+}

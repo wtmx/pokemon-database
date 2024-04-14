@@ -6,7 +6,7 @@ const notion = new Client({auth: process.env.NOTION_KEY})
 const pokeArray = []
 
 async function getPokemon() {
-  await axios.get('https://pokeapi.co/api/v2/pokemon/1')
+  await axios.get('https://pokeapi.co/api/v2/pokemon/2')
     .then((poke) => {
       //console.log(poke)
       const pokeData = {
@@ -23,11 +23,13 @@ async function getPokemon() {
       }
       
       pokeArray.push(pokeData)
-      console.log(pokeData)
+      console.log(`Fetching ${pokeData.name} from PokeAPI.`)
   })
     .catch((error) => {
       console.log(error)
   })
+  
+  createNotionPage()
 }
           
 getPokemon()
@@ -36,10 +38,33 @@ async function createNotionPage() {
   
   for (let pokemon of pokeArray) {
     
+    console.log(`Fetching ${pokeData.name} from PokeAPI.`)
     const response = await notion.pages.create({
       "parent" : {
         "type" :  "database_id",
         "database_id": process.env.NOTION_DATABASE_ID
+      },
+      "properties" : {
+        "Name" : {
+          "title": [
+            {
+              "type" : "text",
+              "text": {
+                "content": pokemon.name
+              }
+            }
+          ]
+        },
+        "No" : {
+          "number" : pokemon.number
+        },
+        "HP" : { "number": pokemon.hp},
+        "Attack" : { "number": pokemon.attack},
+        "Defense" : { "number": pokemon.defense},
+        "Sp. Attack" : { "number": pokemon['special-attack']},
+        "Sp. Defense" : { "number": pokemon['special-defense']},
+        "Height" : { "number": pokemon.height},
+        "Weight" : { "number": pokemon.weight}
       }
     })
     
